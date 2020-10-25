@@ -16,7 +16,6 @@ resource aws_instance "db_server"{
     tags = {
         Name = "DB Server"
     }
-    security_groups = []
     user_data = file (install_apache.sh)
 
 }
@@ -27,8 +26,9 @@ resource aws_instance "web_server"{
     tags = {
         Name = "Web Server"
     }
-    security_groups = []
+    security_groups = [aws_security_group.web_traffic.name]
     user_data = file (install_apache.sh)
+    depends_on = [aws_instance.db_server]
 
 }
 
@@ -46,7 +46,7 @@ variable "egressrules" {
     description = "list of allowed port outbound rules"
     default = [80, 443]
 }
-resource aws_security_group "web traffic" {
+resource aws_security_group "web_traffic" {
     name = "Allow Web Traffic"
     tags = {
         Name = "Web Traffic"
