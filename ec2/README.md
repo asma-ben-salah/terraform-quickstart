@@ -1,0 +1,1 @@
+Simple example on how to create an ec2-instance attach, security group and elastic ips
